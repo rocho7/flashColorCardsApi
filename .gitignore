@@ -3,6 +3,9 @@ HELP.md
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+### JAVA SPRING BOOT ###
+.env
+
 ### STS ###
 .apt_generated
 .classpath
