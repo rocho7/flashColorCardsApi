@@ -1,5 +1,6 @@
 package com.flashcolorcard.springboot.app.controllers;
 
+import com.flashcolorcard.springboot.app.dto.UserDto;
 import com.flashcolorcard.springboot.app.entities.User;
 import com.flashcolorcard.springboot.app.servicies.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(value = "/user", produces = {"application/json"})
+@RequestMapping(value = "/api/auth", produces = {"application/json"})
 public class UserController {
 
     @Autowired
@@ -22,9 +23,9 @@ public class UserController {
         return ResponseEntity.ok(service.findAll());
     }
 
-    @PostMapping
-    public ResponseEntity<User> create(@RequestBody User user) {
-        User userCreated = service.save(user);
+    @PostMapping("/register")
+    public ResponseEntity<UserDto> create(@RequestBody UserDto user) {
+        UserDto userCreated = service.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(userCreated);
     }
 

@@ -1,5 +1,6 @@
 package com.flashcolorcard.springboot.app.servicies;
 
+import com.flashcolorcard.springboot.app.dto.UserDto;
 import com.flashcolorcard.springboot.app.entities.User;
 
 import java.util.List;
@@ -11,7 +12,7 @@ public interface UserService {
 
     Optional<User> findById(Long id);
 
-    User save(User user);
+    UserDto save(UserDto user);
 
     User update(Long id, User user);
 
