@@ -1,19 +1,29 @@
 package com.flashcolorcard.springboot.app.servicies;
 
+import com.flashcolorcard.springboot.app.dto.UserDto;
 import com.flashcolorcard.springboot.app.entities.User;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements  UserService{
 
+    private final PasswordEncoder passwordEncoder;
+
 
     @Autowired
     UserRespository respository;
+
+    public UserServiceImpl(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Transactional(readOnly = true)
     @Override
@@ -29,8 +39,26 @@ public class UserServiceImpl implements  UserService{
 
     @Transactional
     @Override
-    public User save(User user) {
-        return respository.save(user);
+    public UserDto save(UserDto userDto) {
+        if(Objects.isNull(userDto)) {
+            System.out.println("No found user "+ userDto);
+            return null;
+        }
+        if(findByEmail(userDto.getEmail())){
+
+            System.out.println("User already exists "+ userDto);
+            return null;
+
+        } else {
+            User createdUser = new User();
+            createdUser.setName(userDto.getName());
+            createdUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
+//            BeanUtils.copyProperties(user, createdUser);
+            createdUser.setEmail(userDto.getEmail());
+            respository.save(createdUser);
+            userDto.setPassword("********");
+            return userDto;
+        }
     }
 
     @Override
@@ -53,5 +81,13 @@ public class UserServiceImpl implements  UserService{
             return isUser;
         }
         return Optional.empty();
+    }
+
+    public boolean findByEmail(String username) {
+        Optional<User> byUsername = respository.findByEmail(username);
+        if (byUsername.isPresent()) {
+            return true;
+        }
+        return false;
     }
 }
