@@ -2,6 +2,9 @@ package com.flashcolorcard.springboot.app.controllers;
 
 import com.flashcolorcard.springboot.app.entities.Card;
 import com.flashcolorcard.springboot.app.servicies.CardService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,9 +14,11 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@Tag(name = "CardApi", description = "Operaciones relacionadas con cards")
 @RequestMapping(value = "/card", produces = { "application/json" })
 public class CardController {
 
+    private static final Logger logger = LoggerFactory.getLogger(CardController.class);
     @Autowired
     private CardService service;
 
@@ -33,6 +38,7 @@ public class CardController {
 
     @PostMapping
     public ResponseEntity<Card> create(@RequestBody Card card) {
+        logger.info("Recibida la petición create card {}" +card);
         Card cardCreated = service.save(card);
         return ResponseEntity.status(HttpStatus.CREATED).body(cardCreated);
     }

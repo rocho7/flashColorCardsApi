@@ -1,6 +1,6 @@
 package com.flashcolorcard.springboot.app.servicies;
 
-import com.flashcolorcard.springboot.app.entities.Set;
+import com.flashcolorcard.springboot.app.entities.Sets;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,13 +8,13 @@ import java.util.Optional;
 public interface SetService {
 
 
-    List<Set> findAll();
+    List<Sets> findAll();
 
-    Optional<Set> findById(Long id);
+    Optional<Sets> findById(Long id);
 
-    Set save(Set set);
+    Sets save(Sets set);
 
-    Set update(Long id, Set set);
+    Sets update(Long id, Sets set);
 
-    Optional<Set> remove(Long id);
+    Optional<Sets> remove(Long id);
 }

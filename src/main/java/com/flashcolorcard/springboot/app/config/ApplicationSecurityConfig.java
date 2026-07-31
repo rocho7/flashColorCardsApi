@@ -6,6 +6,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -20,21 +22,33 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 public class ApplicationSecurityConfig {
     public static final String CONTENT_TYPE = "application/json";
     public static final String UTF_8 = "UTF-8";
+    private final Environment environment;
+
     @Autowired
     private JwtUtil jwtUtil;
 
     @Autowired
     private UserDetailsService userDetailsService;
 
+    public ApplicationSecurityConfig(Environment environment) {
+        this.environment = environment;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable())
-                .authorizeHttpRequests(requests ->
-                        requests.requestMatchers("/api/auth/**").permitAll()
-//                                .requestMatchers("/**").permitAll()
-                                .anyRequest()
-                                .authenticated()
-                )
+                .authorizeHttpRequests(requests ->{
+                        requests.requestMatchers("/api/auth/**").permitAll();
+                        if (environment.acceptsProfiles(Profiles.of("dev"))) {
+                            requests
+                                .requestMatchers("/swagger-ui/**").permitAll()
+                                    .requestMatchers("/v3/api-docs/**").permitAll()
+                                    .requestMatchers("/v3/api-docs.yaml").permitAll();
+                        }
+
+                                    requests.anyRequest()
+                            .authenticated();
+                })
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint((request, response, authException)-> {
                             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

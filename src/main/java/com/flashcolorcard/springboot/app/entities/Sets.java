@@ -1,16 +1,25 @@
 package com.flashcolorcard.springboot.app.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+
 
 @Entity
 @Table(name = "set")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Set {
+@Builder
+public class Sets {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,4 +37,10 @@ public class Set {
 
     @Column(name = "color")
     private String color;
+
+    @OneToMany(mappedBy = "set", cascade = CascadeType.PERSIST)
+    @JsonManagedReference
+    private List<Card> cards = new ArrayList<>();
+
+
 }
