@@ -1,4 +1,3 @@
-com\flashcolorcard\springboot\app\entities\Set.class
 com\flashcolorcard\springboot\app\servicies\UserServiceImpl.class
 com\flashcolorcard\springboot\app\controllers\UserController.class
 com\flashcolorcard\springboot\app\servicies\UserService.class
