@@ -1,6 +1,6 @@
 package com.flashcolorcard.springboot.app.servicies;
 
-import com.flashcolorcard.springboot.app.entities.Set;
+import com.flashcolorcard.springboot.app.entities.Sets;
 import com.flashcolorcard.springboot.app.repositories.SetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,28 +17,28 @@ public class SetServiceImpl implements SetService{
 
     @Transactional(readOnly = true)
     @Override
-    public List<Set> findAll() {
-        return (List<Set>) repository.findAll();
+    public List<Sets> findAll() {
+        return (List<Sets>) repository.findAll();
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<Set> findById(Long id) {
+    public Optional<Sets> findById(Long id) {
         return repository.findById(id);
     }
 
     @Transactional
     @Override
-    public Set save(Set set) {
+    public Sets save(Sets set) {
         return repository.save(set);
     }
 
     @Override
-    public Set update(Long id, Set set) {
-        Optional<Set> isNewSet = findById(id);
+    public Sets update(Long id, Sets set) {
+        Optional<Sets> isNewSet = findById(id);
 
         if ( isNewSet.isPresent() ) {
-            Set updatedSet = isNewSet.orElseThrow();
+            Sets updatedSet = isNewSet.orElseThrow();
             updatedSet.setRemain(set.getRemain());
             updatedSet.setTotal(set.getTotal());
             updatedSet.setTitle(set.getTitle());
@@ -49,11 +49,11 @@ public class SetServiceImpl implements SetService{
     }
 
     @Override
-    public Optional<Set> remove(Long id) {
-        Optional<Set> isSet = findById(id);
+    public Optional<Sets> remove(Long id) {
+        Optional<Sets> isSet = findById(id);
 
         if ( isSet.isPresent() ) {
-            Set removed = isSet.orElseThrow();
+            Sets removed = isSet.orElseThrow();
 
             repository.delete(removed);
             return isSet;
