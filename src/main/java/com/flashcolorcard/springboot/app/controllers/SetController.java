@@ -1,5 +1,6 @@
 package com.flashcolorcard.springboot.app.controllers;
 
+import com.flashcolorcard.springboot.app.dto.SetsDto;
 import com.flashcolorcard.springboot.app.entities.Sets;
 import com.flashcolorcard.springboot.app.servicies.SetService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -44,7 +45,7 @@ public class SetController {
     }
 
     @PostMapping
-    public ResponseEntity<Sets> create(@RequestBody Sets set) {
+    public ResponseEntity<Sets> create(@RequestBody SetsDto set) {
         Sets setCreated = service.save(set);
         return ResponseEntity.status(HttpStatus.CREATED).body(setCreated);
     }

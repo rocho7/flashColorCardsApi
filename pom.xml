@@ -111,6 +111,12 @@
 			<version>3.0.3</version>
 			<scope>compile</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>1.6.3</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -137,5 +143,7 @@
 			</plugin>
 		</plugins>
 	</build>
+
+
 
 </project>
