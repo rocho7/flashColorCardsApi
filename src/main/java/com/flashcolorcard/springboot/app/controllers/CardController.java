@@ -1,5 +1,6 @@
 package com.flashcolorcard.springboot.app.controllers;
 
+import com.flashcolorcard.springboot.app.dto.CardDto;
 import com.flashcolorcard.springboot.app.entities.Card;
 import com.flashcolorcard.springboot.app.servicies.CardService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -37,7 +38,7 @@ public class CardController {
     }
 
     @PostMapping
-    public ResponseEntity<Card> create(@RequestBody Card card) {
+    public ResponseEntity<Card> create(@RequestBody CardDto card) {
         logger.info("Recibida la petición create card {}" +card);
         Card cardCreated = service.save(card);
         return ResponseEntity.status(HttpStatus.CREATED).body(cardCreated);

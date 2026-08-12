@@ -1,5 +1,6 @@
 package com.flashcolorcard.springboot.app.servicies;
 
+import com.flashcolorcard.springboot.app.dto.SetsDto;
 import com.flashcolorcard.springboot.app.entities.Sets;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public interface SetService {
 
     Optional<Sets> findById(Long id);
 
-    Sets save(Sets set);
+    Sets save(SetsDto set);
 
     Sets update(Long id, Sets set);
 

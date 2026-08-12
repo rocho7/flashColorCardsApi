@@ -1,5 +1,6 @@
 package com.flashcolorcard.springboot.app.servicies;
 
+import com.flashcolorcard.springboot.app.dto.CardDto;
 import com.flashcolorcard.springboot.app.entities.Card;
 
 import java.util.List;
@@ -11,7 +12,7 @@ public interface CardService {
 
     Optional<Card> findById(Long id);
 
-    Card save(Card card);
+    Card save(CardDto card);
 
     Card update(Long id, Card card);
 

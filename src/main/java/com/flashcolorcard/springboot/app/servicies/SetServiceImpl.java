@@ -1,6 +1,9 @@
 package com.flashcolorcard.springboot.app.servicies;
 
+import com.flashcolorcard.springboot.app.dto.SetsDto;
+import com.flashcolorcard.springboot.app.dto.sets.SetsDtoMapper;
 import com.flashcolorcard.springboot.app.entities.Sets;
+import com.flashcolorcard.springboot.app.entities.User;
 import com.flashcolorcard.springboot.app.repositories.SetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,9 @@ public class SetServiceImpl implements SetService{
 
     @Autowired
     private SetRepository repository;
+
+    @Autowired
+    private SetsDtoMapper mapper;
 
     @Transactional(readOnly = true)
     @Override
@@ -29,8 +35,19 @@ public class SetServiceImpl implements SetService{
 
     @Transactional
     @Override
-    public Sets save(Sets set) {
-        return repository.save(set);
+    public Sets save(SetsDto setsDto) {
+
+        User user = new User();
+        user.setId(setsDto.getIdUser());
+
+        Sets entity = new Sets();
+        entity.setTitle(setsDto.getTitle());
+        entity.setRemain(setsDto.getRemain());
+        entity.setTotal(setsDto.getTotal());
+        entity.setColor(setsDto.getColor());
+//        entity.setIdUser(setsDto.getIdUser());
+        entity.setUser(user);
+        return mapper.fromEntity( repository.save(entity));
     }
 
     @Override

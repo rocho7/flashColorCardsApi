@@ -1,6 +1,8 @@
 package com.flashcolorcard.springboot.app.servicies;
 
 import com.flashcolorcard.springboot.app.dto.UserDto;
+import com.flashcolorcard.springboot.app.dto.user.ResponseUserDto;
+import com.flashcolorcard.springboot.app.dto.user.UserDtoMapper;
 import com.flashcolorcard.springboot.app.entities.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,9 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements  UserService{
 
+    @Autowired
+    private UserDtoMapper mapper;
+
     private final PasswordEncoder passwordEncoder;
 
 
@@ -27,8 +32,13 @@ public class UserServiceImpl implements  UserService{
 
     @Transactional(readOnly = true)
     @Override
-    public List<User> findAll() {
-        return (List<User>) respository.findAll();
+    public List<ResponseUserDto> findAll() {
+        List<User> users = respository.findAll();
+
+        List<ResponseUserDto> responseUserDtos = mapper.fromEntityList(users);
+
+
+        return responseUserDtos;
     }
 
     @Transactional(readOnly = true)
@@ -53,9 +63,9 @@ public class UserServiceImpl implements  UserService{
             User createdUser = new User();
             createdUser.setName(userDto.getName());
             createdUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
-//            BeanUtils.copyProperties(user, createdUser);
             createdUser.setEmail(userDto.getEmail());
-            respository.save(createdUser);
+            User userSaved = respository.save(createdUser);
+            userDto.setId(userSaved.getId());
             userDto.setPassword("********");
             return userDto;
         }
