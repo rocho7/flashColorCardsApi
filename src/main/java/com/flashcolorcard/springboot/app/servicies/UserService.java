@@ -1,6 +1,7 @@
 package com.flashcolorcard.springboot.app.servicies;
 
 import com.flashcolorcard.springboot.app.dto.UserDto;
+import com.flashcolorcard.springboot.app.dto.user.ResponseUserDto;
 import com.flashcolorcard.springboot.app.entities.User;
 
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.Optional;
 
 public interface UserService {
 
-    List<User> findAll();
+    List<ResponseUserDto> findAll();
 
     Optional<User> findById(Long id);
 

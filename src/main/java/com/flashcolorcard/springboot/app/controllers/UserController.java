@@ -1,6 +1,7 @@
 package com.flashcolorcard.springboot.app.controllers;
 
 import com.flashcolorcard.springboot.app.dto.UserDto;
+import com.flashcolorcard.springboot.app.dto.user.ResponseUserDto;
 import com.flashcolorcard.springboot.app.entities.User;
 import com.flashcolorcard.springboot.app.servicies.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class UserController {
     private UserService service;
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<List<ResponseUserDto>> getAllUsers() {
         return ResponseEntity.ok(service.findAll());
     }
 

@@ -32,7 +32,7 @@ public class CardServiceImpl implements CardService{
 
     @Transactional(readOnly = true)
     @Override
-    public List<Card> findAll() {
+    public List<Card> findAll( ) {
         return (List<Card>) this.respository.findAll();
     }
 

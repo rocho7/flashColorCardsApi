@@ -1,5 +1,6 @@
 package com.flashcolorcard.springboot.app.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -33,14 +34,19 @@ public class Sets {
 
     private Integer remain;
 
-    @Column(name = "id_user")
-    @NotNull
-    private Long idUser;
+//    @Column(name = "id_user")
+//    @NotNull
+//    private Long idUser;
 
     @Column(name = "color")
     private String color;
 
-    @OneToMany(mappedBy = "set", cascade = CascadeType.PERSIST)
+    @ManyToOne
+    @JoinColumn(name = "id_user")
+    @JsonBackReference
+    private User user;
+
+    @OneToMany(mappedBy = "set", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Card> cards = new ArrayList<>();
 
