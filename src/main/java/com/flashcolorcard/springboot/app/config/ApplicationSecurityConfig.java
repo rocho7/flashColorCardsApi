@@ -96,7 +96,7 @@ public class ApplicationSecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
 //        configuration.setAllowedOrigins(List.of("http://localhost:4200"));
-        configuration.setAllowedOrigins(List.of("https://flashcolorcardsapi.onrender.com"));
+        configuration.setAllowedOrigins(List.of("https://flashcolorcardsfrontbuild.onrender.com"));
 
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 
