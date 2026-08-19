@@ -42,21 +42,21 @@ public class SetController {
         return ResponseEntity.ok(service.findByUserId(headers));
     }
 
-//    @GetMapping("/{id}")
-//    @Operation(summary = "Obtener set by id", description = "Obtener un set por un especifico id.")
-//    @ApiResponses(
-//            value = {
-//                    @ApiResponse(responseCode = "200", description = "Set encontrado existosamente."),
-//                    @ApiResponse(responseCode = "400", description = "Set no encontrado."),
-//            }
-//    )
-//    public ResponseEntity<Sets> getSetById(@PathVariable Long id) {
-//        Optional<Sets> set = service.findById(id);
-//        if ( set.isPresent() ) {
-//            return ResponseEntity.ok(set.orElseThrow());
-//        }
-//        return ResponseEntity.notFound().build();
-//    }
+    @GetMapping("/{id}")
+    @Operation(summary = "Obtener set by id", description = "Obtener un set por un especifico id.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Set encontrado existosamente."),
+                    @ApiResponse(responseCode = "400", description = "Set no encontrado."),
+            }
+    )
+    public ResponseEntity<Sets> getSetById(@PathVariable Long id) {
+        Optional<Sets> set = service.findById(id);
+        if ( set.isPresent() ) {
+            return ResponseEntity.ok(set.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
+    }
 
     @PostMapping
     public ResponseEntity<Sets> create(@Valid @RequestBody SetsDto set) {
