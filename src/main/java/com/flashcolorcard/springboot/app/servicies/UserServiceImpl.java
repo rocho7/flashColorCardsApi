@@ -4,12 +4,18 @@ import com.flashcolorcard.springboot.app.dto.UserDto;
 import com.flashcolorcard.springboot.app.dto.user.ResponseUserDto;
 import com.flashcolorcard.springboot.app.dto.user.UserDtoMapper;
 import com.flashcolorcard.springboot.app.entities.User;
+import com.flashcolorcard.springboot.app.utils.GlobalUser;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.springframework.http.HttpHeaders;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -22,6 +28,8 @@ public class UserServiceImpl implements  UserService{
 
     private final PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private GlobalUser globalUser;
 
     @Autowired
     UserRespository respository;
@@ -39,6 +47,15 @@ public class UserServiceImpl implements  UserService{
 
 
         return responseUserDtos;
+    }
+
+    @Override
+    public Optional<ResponseUserDto> findUserByEmail(String email) {
+        if ( email.isEmpty()) {
+            return null;
+        }
+        List<ResponseUserDto> userList = findAll();
+        return userList.stream().filter(it -> it.getEmail().toLowerCase().equals(email.toLowerCase())).findFirst();
     }
 
     @Transactional(readOnly = true)
@@ -99,5 +116,27 @@ public class UserServiceImpl implements  UserService{
             return true;
         }
         return false;
+    }
+
+    @Override
+    public UserDto getLoguedUser(HttpHeaders headers) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        String email = ((org.springframework.security.core.userdetails.User) authentication.getPrincipal()).getUsername();
+
+        User user = respository.findByEmail(email)
+                .orElseThrow(()-> new EntityNotFoundException("Usuario no encontrado"));
+
+        UserDto userDto = new UserDto();
+        userDto.setId(user.getId());
+        userDto.setName(user.getName());
+        userDto.setEmail(user.getEmail());
+
+        globalUser.setId(userDto.getId());
+        globalUser.setName(userDto.getName());
+        globalUser.setEmail(userDto.getEmail());
+
+        return userDto;
     }
 }

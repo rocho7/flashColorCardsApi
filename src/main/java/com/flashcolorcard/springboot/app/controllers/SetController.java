@@ -7,7 +7,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,24 +30,36 @@ public class SetController {
         return ResponseEntity.ok(service.findAll());
     }
 
-    @GetMapping("/{id}")
-    @Operation(summary = "Obtener set by id", description = "Obtener un set por un especifico id.")
+    @GetMapping("/byUser")
+    @Operation(summary = "Obtener set by userId", description = "Obtener un set por un especifico userId.")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Set encontrado existosamente."),
                     @ApiResponse(responseCode = "400", description = "Set no encontrado."),
             }
     )
-    public ResponseEntity<Sets> getSetById(@PathVariable Long id) {
-        Optional<Sets> set = service.findById(id);
-        if ( set.isPresent() ) {
-            return ResponseEntity.ok(set.orElseThrow());
-        }
-        return ResponseEntity.notFound().build();
+    public  ResponseEntity<List<Sets>> getSetsByUserId(@RequestHeader HttpHeaders headers) {
+        return ResponseEntity.ok(service.findByUserId(headers));
     }
 
+//    @GetMapping("/{id}")
+//    @Operation(summary = "Obtener set by id", description = "Obtener un set por un especifico id.")
+//    @ApiResponses(
+//            value = {
+//                    @ApiResponse(responseCode = "200", description = "Set encontrado existosamente."),
+//                    @ApiResponse(responseCode = "400", description = "Set no encontrado."),
+//            }
+//    )
+//    public ResponseEntity<Sets> getSetById(@PathVariable Long id) {
+//        Optional<Sets> set = service.findById(id);
+//        if ( set.isPresent() ) {
+//            return ResponseEntity.ok(set.orElseThrow());
+//        }
+//        return ResponseEntity.notFound().build();
+//    }
+
     @PostMapping
-    public ResponseEntity<Sets> create(@RequestBody SetsDto set) {
+    public ResponseEntity<Sets> create(@Valid @RequestBody SetsDto set) {
         Sets setCreated = service.save(set);
         return ResponseEntity.status(HttpStatus.CREATED).body(setCreated);
     }

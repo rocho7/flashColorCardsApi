@@ -1,11 +1,14 @@
 package com.flashcolorcard.springboot.app.servicies;
 
 import com.flashcolorcard.springboot.app.dto.SetsDto;
+import com.flashcolorcard.springboot.app.dto.UserDto;
 import com.flashcolorcard.springboot.app.dto.sets.SetsDtoMapper;
 import com.flashcolorcard.springboot.app.entities.Sets;
 import com.flashcolorcard.springboot.app.entities.User;
 import com.flashcolorcard.springboot.app.repositories.SetRepository;
+import com.flashcolorcard.springboot.app.utils.GlobalUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,12 +22,25 @@ public class SetServiceImpl implements SetService{
     private SetRepository repository;
 
     @Autowired
+    private  UserService userService;
+
+    @Autowired
     private SetsDtoMapper mapper;
+
+    @Autowired
+    private GlobalUser globalUser;
 
     @Transactional(readOnly = true)
     @Override
     public List<Sets> findAll() {
         return (List<Sets>) repository.findAll();
+    }
+
+    @Override
+    public List<Sets> findByUserId(HttpHeaders headers) {
+        UserDto userDto = userService.getLoguedUser(headers);
+
+        return repository.findByUserId(globalUser.getId());
     }
 
     @Transactional(readOnly = true)

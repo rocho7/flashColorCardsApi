@@ -4,12 +4,15 @@ import com.flashcolorcard.springboot.app.dto.UserDto;
 import com.flashcolorcard.springboot.app.dto.user.ResponseUserDto;
 import com.flashcolorcard.springboot.app.entities.User;
 
+import org.springframework.http.HttpHeaders;
 import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
 
     List<ResponseUserDto> findAll();
+
+    Optional<ResponseUserDto> findUserByEmail(String email);
 
     Optional<User> findById(Long id);
 
@@ -18,4 +21,6 @@ public interface UserService {
     User update(Long id, User user);
 
     Optional<User> remove(Long id);
+
+    UserDto getLoguedUser(HttpHeaders headers);
 }

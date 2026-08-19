@@ -15,9 +15,11 @@ public class UserDtoMapperImpl implements UserDtoMapper{
         if (users.isEmpty()) {
             return null;
         }
-        ResponseUserDto responseUserDto = new ResponseUserDto();
+
         List<ResponseUserDto>  responseUserDtoList = new ArrayList<>();
         users.stream().forEach(user -> {
+            ResponseUserDto responseUserDto = new ResponseUserDto();
+            responseUserDto.setId(user.getId());
             responseUserDto.setName(user.getName());
             responseUserDto.setEmail(user.getEmail());
             responseUserDtoList.add(responseUserDto);
