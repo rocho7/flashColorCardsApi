@@ -42,6 +42,11 @@ public class CardServiceImpl implements CardService{
         return respository.findById(id);
     }
 
+    @Override
+    public Optional<Card> getByIdAndByIdSet(Long idCard, Sets set) {
+        return respository.findByIdAndSet(idCard, set);
+    }
+
     @Transactional
     @Override
     public Card save(CardDto cardDto) {
@@ -77,7 +82,8 @@ public class CardServiceImpl implements CardService{
     @Override
     public Card update(Long id, Card card) {
 
-        Optional<Card> isNewCard = this.findById(id);
+//        Optional<Card> isNewCard = this.findById(id);
+        Optional<Card> isNewCard = this.getByIdAndByIdSet(id, card.getSet());
         if (isNewCard.isPresent()) {
             Card updatedCard = isNewCard.orElseThrow();
             updatedCard.setTitle(card.getTitle());

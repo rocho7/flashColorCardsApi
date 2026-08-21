@@ -1,9 +1,6 @@
 package com.flashcolorcard.springboot.app.dto;
 
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -36,7 +33,7 @@ public class CardDto {
     private Long delay;
 
     @NotNull
-    @Size(min = 1, max = 20)
+//    @Max(value = 20)
     private  String color;
 
 }
