@@ -8,8 +8,8 @@ import java.time.LocalDate;
 @Data
 public class CardDto {
 
-    @NotNull
-    @Min(value = 0)
+//    @NotNull
+//    @Min(value = 0)
     private Long idSet;
 
     @NotNull
